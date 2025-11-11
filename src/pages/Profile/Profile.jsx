@@ -311,7 +311,6 @@ const Profile = () => {
         </div>
       </div>
 
-
       <div className="profile-fields-container">
         <div className="profile-fields-header">
           <h2 className="profile-fields-title">Profile Information</h2>
@@ -385,6 +384,7 @@ const Profile = () => {
 
         </div>
       </div>
+      {user.role === "job_seeker" && (
       <div style={{ textAlign: "center", marginTop: "5px", marginBottom: "30px" }}>
       <button
         className="generate-resume-btn"
@@ -431,8 +431,7 @@ const Profile = () => {
         </div>
       )}
     </div>
-
-
+    )}
     </div>
   );
 };

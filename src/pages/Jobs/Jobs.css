@@ -701,43 +701,64 @@ body {
   color: #ff4d4d;
 }
 
-/* Floating button for opening filter sidebar */
+/* Floating filter button */
 .filter-toggle-btn {
   position: fixed;
-  top: 100px;
-  right: 20px;
-  display: inline-block;
-  padding: 8px 16px;
-  background: linear-gradient(135deg, #007bff 0%, #00aaff 100%);
-  border-radius: 12px;
-  color: white;
-  font-size: 1.2rem;
-  font-weight: 500;
-  box-shadow: 0 2px 6px rgba(0, 123, 255, 0.3);
+  top: 120px;
+  right: 10px;
+  background: linear-gradient(135deg, #007bff, #00aaff);
+  color: #fff;
+  font-weight: 600;
+  padding: 10px 16px;
   border: none;
+  border-radius: 10px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  z-index: 9998;
+  box-shadow: 0 3px 10px rgba(0, 123, 255, 0.3);
+  z-index: 1000;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .filter-toggle-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(0, 123, 255, 0.4);
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
 }
 
-.ai-btn {
+/* 🧠 AI Filter Button */
+.ai-filter-btn {
+  position: fixed;
+  top: 180px; /* right below filter button */
+  right: 10px;
   background: linear-gradient(135deg, #5c2eff, #7a5fff);
-  color: white;
+  color: #fff;
   font-weight: 600;
+  padding: 10px 18px;
   border: none;
-  border-radius: 8px;
-  padding: 10px 14px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  box-shadow: 0 3px 10px rgba(92, 46, 255, 0.3);
+  z-index: 1000;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-.ai-btn:hover {
-  background: linear-gradient(135deg, #7046ff, #9370ff);
-  transform: translateY(-2px);
+
+.ai-filter-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(92, 46, 255, 0.5);
+}
+
+/* Responsive adjustment for small screens */
+@media (max-width: 768px) {
+  .filter-toggle-btn {
+    top: 100px;
+    right: 15px;
+    padding: 8px 12px;
+  }
+
+  .ai-filter-btn {
+    top: 160px;
+    right: 15px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
 }
 
   /* Filter card */

@@ -270,14 +270,26 @@ const handleAIRecommendation = async () => {
 
     if (aiResponse?.ranked_jobs?.length > 0) {
       const ranked = aiResponse.ranked_jobs
-        .map((r) => jobs.find((j) => j.id === r.id))
+        .map((r) => {
+          const job = jobs.find((j) => j.id === r.id);
+          if (!job) return null;
+          return {
+            ...job,
+            match_score: r.match_score,
+            reason: r.reason,
+          };
+        })
         .filter(Boolean);
+
+      console.log("Merged AI-ranked jobs:", ranked); // 🧠 Debug check
+
       setFilteredJobs(ranked);
       setTotal(ranked.length);
       setFlashMessage("Jobs ranked using AI!", "success");
     } else {
       setFlashMessage("AI could not find matching jobs.", "warning");
     }
+
   } catch (error) {
     console.error("AI Filter Error:", error);
     setFlashMessage("AI analysis failed.", "error");
@@ -353,19 +365,22 @@ const handleAIRecommendation = async () => {
       {/* AI Recommendation Button */}
       {role === "job_seeker" && (
         <button
-          className="btn ai-btn"
-          style={{
-            marginTop: "12px",
-            background: "linear-gradient(135deg, #5c2eff, #7a5fff)",
-            color: "white",
-            fontWeight: 600,
-          }}
+          className="ai-filter-btn"
           onClick={handleAIRecommendation}
+          disabled={loading} // prevent spamming
         >
-          🤖 Filter Using AI
+          {loading ? (
+            <>
+              <span className="spinner"></span>
+              <span className="loading-text">Filtering… <br /> based on <br /> skills</span>
+            </>
+          ) : (
+            <>
+              Filter Using <br /> AI ✨
+            </>
+          )}
         </button>
       )}
-
 
       {/* results bar: top-left count (outside job container) */}
       <div
@@ -396,13 +411,14 @@ const handleAIRecommendation = async () => {
 
       <section className="job-container" style={{ maxWidth: 1200 }}>
         {filteredJobs && filteredJobs.length > 0 ? (
-          filteredJobs.map((job) => (
+          filteredJobs.map((job, index) => (
             <JobCard 
               key={job.id} 
               job={job} 
               userRole={role}
               userId={user?.id}
               onDeleteJob={handleDeleteJob}
+              index={index}
             />
           ))
         ) : (

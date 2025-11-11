@@ -289,6 +289,47 @@
   text-shadow: 0 2px 4px rgba(0, 35, 102, 0.1);
 }
 
+/* --- AI Match Badge --- */
+.ai-match-badge {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 40px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+  letter-spacing: 0.3px;
+  animation: fadeIn 0.4s ease-in-out;
+  backdrop-filter: blur(4px);
+}
+
+/* --- AI Reason --- */
+.ai-reason {
+  font-size: 0.9rem;
+  color: #444;
+  background: #f6f6ff;
+  border-left: 3px solid #5c2eff;
+  padding: 8px 10px;
+  border-radius: 6px;
+  margin: 10px 0;
+  font-style: italic;
+  line-height: 1.4;
+}
+
+/* Hover glow effect for badge */
+.job-card:hover .ai-match-badge {
+  transform: scale(1.05);
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 0 12px rgba(92, 46, 255, 0.5);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
 /* Keyframe animation matching header/footer */
 @keyframes gradientShift {
   0% { background-position: 0% 50%; }
