@@ -75,9 +75,23 @@ class BackendService {
     }
   }
 
+  async getAIJobMatches(data) {
+    try {
+      const response = await this.api.post("/ai-job-matcher", data, {
+        headers: { "Content-Type": "application/json" },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("AI Job Match Error:", error);
+      throw error.response?.data || "Failed to get AI job matches";
+    }
+  }
+
   async addJob(jobData) {
     try {
-      const response = await this.api.post("/add_job", jobData);
+      const response = await this.api.post("/add_job", jobData, {
+        headers: { "Content-Type": "application/json" },
+      });
       return response.data;
     } catch (error) {
       throw error.response?.data || "Failed to add job";

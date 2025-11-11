@@ -230,6 +230,62 @@ const JobListings = () => {
     fetchJobs({});
   };
 
+const handleAIRecommendation = async () => {
+  console.log("AI filter button clicked ✅");
+  try {
+    setLoading(true);
+    console.log("Fetching profile...");
+    const profileRes = await backendService.getCurrentUserProfile();
+    console.log("Profile response:", profileRes);
+
+    const profile = profileRes?.profileData || profileRes?.user || profileRes;
+
+    if (!profile?.skills || profile.skills.trim() === "") {
+      console.log("Profile missing skills:", profile);
+      setFlashMessage("Please update your skills to use AI sorting.", "warning");
+      setLoading(false);
+      return;
+    }
+
+    console.log("Preparing AI payload...");
+    const userData = {
+      username: profile.username,
+      skills: profile.skills,
+      education: profile.education,
+      experience: profile.work_experience,
+    };
+
+    const jobData = jobs.map((job) => ({
+      id: job.id,
+      title: job.title,
+      description: job.description,
+    }));
+
+    console.log("Sending payload to AI endpoint...");
+    const aiResponse = await backendService.getAIJobMatches({
+      profile: userData,
+      jobs: jobData,
+    });
+    console.log("AI response:", aiResponse);
+
+    if (aiResponse?.ranked_jobs?.length > 0) {
+      const ranked = aiResponse.ranked_jobs
+        .map((r) => jobs.find((j) => j.id === r.id))
+        .filter(Boolean);
+      setFilteredJobs(ranked);
+      setTotal(ranked.length);
+      setFlashMessage("Jobs ranked using AI!", "success");
+    } else {
+      setFlashMessage("AI could not find matching jobs.", "warning");
+    }
+  } catch (error) {
+    console.error("AI Filter Error:", error);
+    setFlashMessage("AI analysis failed.", "error");
+  } finally {
+    setLoading(false);
+  }
+};
+
   const handleDeleteJob = (jobId) => {
     setJobs(jobs.filter((job) => job.id !== jobId));
     setFilteredJobs(filteredJobs.filter((job) => job.id !== jobId));
@@ -293,6 +349,23 @@ const JobListings = () => {
       >
         ⚙️ Filters
       </button>
+
+      {/* AI Recommendation Button */}
+      {role === "job_seeker" && (
+        <button
+          className="btn ai-btn"
+          style={{
+            marginTop: "12px",
+            background: "linear-gradient(135deg, #5c2eff, #7a5fff)",
+            color: "white",
+            fontWeight: 600,
+          }}
+          onClick={handleAIRecommendation}
+        >
+          🤖 Filter Using AI
+        </button>
+      )}
+
 
       {/* results bar: top-left count (outside job container) */}
       <div

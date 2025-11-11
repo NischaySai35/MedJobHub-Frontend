@@ -725,6 +725,20 @@ body {
   box-shadow: 0 6px 18px rgba(0, 123, 255, 0.4);
 }
 
+.ai-btn {
+  background: linear-gradient(135deg, #5c2eff, #7a5fff);
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.ai-btn:hover {
+  background: linear-gradient(135deg, #7046ff, #9370ff);
+  transform: translateY(-2px);
+}
 
   /* Filter card */
 .filter-card {
