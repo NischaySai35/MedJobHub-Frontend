@@ -1,4 +1,5 @@
 import axios from "axios";
+import { EventSourcePolyfill } from "event-source-polyfill";
 
 class BackendService {
   constructor() {
@@ -238,6 +239,54 @@ class BackendService {
       throw error.response?.data || "Failed to upload profile picture";
     }
   }
+
+    async chatbot(message) {
+    try {
+      const response = await this.api.post(
+        "/chatbot",
+        { message },
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Chatbot error:", error);
+      return { reply: "Something went wrong talking to AI.", action: null };
+    }
+  }
+
+startChatbotStream(message, onMessage, onDone) {
+    const url =
+        `${import.meta.env.VITE_BACKEND_URI}/chatbot_stream?message=` +
+        encodeURIComponent(message);
+
+    // START SSE STREAM
+    const evtSource = new EventSourcePolyfill(url, {
+        withCredentials: true
+    });
+
+    evtSource.onmessage = (event) => {
+        if (event.data === "[DONE]") {
+            evtSource.close();
+            onDone && onDone();
+            return;
+        }
+
+        const data = JSON.parse(event.data);
+        onMessage(data);
+    };
+
+    evtSource.onerror = (err) => {
+        console.error("Stream error:", err);
+        evtSource.close();
+    };
+
+    return evtSource;
+}
+
+
 }
 
 const backendService = new BackendService();

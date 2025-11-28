@@ -8,6 +8,8 @@ import backendService from './Flask_service/flask';
 import { useFlash } from "./context/FlashContext";
 import { useNavigate } from 'react-router-dom';
 import { Jobs, JobInfo, Home } from "./pages"; // adjust import paths
+import Chatbot from "./components/Chatbot/Chatbot";
+
 
 function App() {
 
@@ -47,6 +49,7 @@ function App() {
   return (
     <>
         <Header />
+        <Chatbot />
         <main>
         <Outlet/>
         </main>
